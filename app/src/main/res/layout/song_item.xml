@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:descendantFocusability= "blocksDescendants"
+   >
+
+
+    <!--歌曲名-->
+    <TextView
+        android:id="@+id/item_song_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我喜欢你"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"/>
+
+    <!--歌手名-->
+    <TextView
+        android:id="@+id/item_singer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陈小希"
+        android:layout_below="@id/item_song_name"
+        android:layout_alignLeft="@id/item_song_name"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="14sp"
+        android:textColor="#888"/>
+
+    <!--歌手与专辑的横线-->
+    <TextView
+        android:id="@+id/item_line"
+        android:layout_width="2dp"
+        android:layout_height="18dp"
+        android:background="#888"
+        android:layout_toRightOf="@id/item_singer"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
+        android:layout_alignTop="@id/item_singer"/>
+
+    <!--专辑名-->
+    <TextView
+        android:id="@+id/item_album"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="小美好"
+        android:layout_toRightOf="@id/item_line"
+        android:layout_alignBottom="@id/item_singer"
+        android:textSize="14sp"
+        android:textColor="#888"
+        android:ellipsize="end"
+       />
+
+
+    <!--删除歌曲的按钮-->
+    <!--<ImageButton-->
+        <!--android:id="@+id/item_delete"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_below="@id/item_song_name"-->
+        <!--android:layout_marginRight="20dp"-->
+
+        <!--android:src="@drawable/ic_delete"-->
+        <!--android:padding="0dp"-->
+        <!--android:focusable = "false" />-->
+
+    <!--播放时长-->
+    <TextView
+        android:id="@+id/item_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_song_name"
+
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:text="03:40"
+        android:textSize="14sp"
+        android:textColor="#888"/>
+
+
+
+</RelativeLayout>
+
+
