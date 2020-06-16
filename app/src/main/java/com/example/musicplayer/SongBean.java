@@ -10,18 +10,20 @@ public class SongBean {
     private String album; //专辑名称
     private String duration; //歌曲时长
     private String path; //歌曲路径
+    private int album_id;//
 
 
     public SongBean() {
     }
 
-    public SongBean( String song, String singer, String album, String duration,String path) {
+    public SongBean( String song, String singer, String album, String duration,String path,int album_id) {
 
         this.song = song;
         this.singer = singer;
         this.album = album;
         this.duration = duration;
         this.path = path;
+        this.album_id =album_id;
 
 
     }
@@ -66,5 +68,15 @@ public class SongBean {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+
+
+    public int getAlbum_id() {
+        return album_id;
+    }
+
+    public void setAlbum_id(int album_id) {
+        this.album_id = album_id;
     }
 }

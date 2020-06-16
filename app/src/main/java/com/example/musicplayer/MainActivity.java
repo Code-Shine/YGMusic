@@ -5,6 +5,9 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private List<SongBean> songBeanList = new ArrayList<>();
 
-    ImageView B_next, B_play, B_last;
+    ImageView B_next, B_play, B_last,B_ablum;
     TextView B_singer, B_song_name;
     ListView listView;
     SongAdapter adapter;
@@ -48,7 +51,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //用一个变量记录ListView中的点击的位置，用于切换音乐
     int CurrentMusicPosition;
 
-
+    /**
+     * onCreate方法
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,15 +91,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.backup:
                 Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
-            case R.id.settings:
-                Toast.makeText(this, "设置", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete:
 
                 Toast.makeText(this, "删除", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
                 dialog.setTitle("确定删除当前正在播放的音乐吗？");
-                dialog.setMessage("请确认是否对当前正在播放的音乐进行删除");
+                dialog.setMessage("请确认是否对当前音乐进行删除");
                 dialog.setCancelable(false);
                 dialog.setPositiveButton("确认",new DialogInterface.OnClickListener(){
                     @Override
@@ -114,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    //删除音乐
+    /**
+     * 删除音乐
+     */
     private void deleteCurrentMusic() {
         //停止播放当前音乐,并说明停止的原因
         mediaPlayer.stop();
@@ -134,22 +140,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**********************    动态申请权限并读取数据     ***********************/
-    //加载本地音乐的信息到SongBean的集合中
+    /**
+     *   功能 加载本地音乐的信息到SongBean的集合中
+     */
     private void loadMusic() {
-
         //运行时的SD卡权限申请
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED){//如果权限没有申请
             //则是申请权限
             ActivityCompat.requestPermissions(this,new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE },1);
-
         }else {
             readContacts();
         }
     }
 
-
+    /**
+     * 功能 找到SD卡中的歌曲信息，将其封装为一个Bean添加到songBeanList中
+     */
     private void readContacts() {
 
 //        1.获取内容解析者对象ContextResolver
@@ -183,12 +191,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
                     String time = sdf.format(new Date(duration));
 
-
+                    //获取album_id,专辑图片的ID
+                    int album_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+//                    Log.d("album", String.valueOf(album_id));
+//                    Toast.makeText(MainActivity.this,String.valueOf(album_id),Toast.LENGTH_LONG).show();
 
                     //将一行当中的数据封装到对象当中
-                    SongBean bean = new SongBean(song, singer, ablum, time,path);
+                    SongBean bean = new SongBean(song, singer, ablum, time,path,album_id);
                     songBeanList.add(bean);
-
               }
             }
             //通知数据进行更新
@@ -203,6 +213,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    /**
+     * 功能 动态申请权限
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,String[] permissions,
                                            int[] grantResults){
@@ -226,20 +240,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**********************    初始化     ***********************/
+    /**
+     * 功能 底部按钮初始化
+     */
     private void initView() {
-        //底部按钮初始化
         B_next = (ImageView) findViewById(R.id.bottom_next);
         B_last = (ImageView) findViewById(R.id.bottom_last);
         B_play = (ImageView) findViewById(R.id.bottom_play);//play与pause共用一个按钮，到时替换图片
+        B_ablum = (ImageView)findViewById(R.id.song_icon) ;
         B_next.setOnClickListener(this);
         B_last.setOnClickListener(this);
         B_play.setOnClickListener(this);
+        B_ablum.setOnClickListener(this);
 
         //底部歌曲与歌手信息初始化
         B_song_name = (TextView) findViewById(R.id.bottom_song_name);
         B_singer = (TextView) findViewById(R.id.bottom_singer);
     }
 
+    /**
+     * 功能 1.将songBeanList中的对象数据放入适配器中。
+     *      2.将适配器与ListView进行关联
+     *      3.为ListView中的每一个item进行事件监听
+     *      4.每当点击item播放相应的歌曲
+     *
+     */
     private void initSongs() {
             //测试布局数据
 //            SongBean song1 = new SongBean("盔甲", "王贰浪", "盔甲", "4:22");
@@ -282,23 +307,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**********************    音乐的播放等操作     ***********************/
+    /**
+     * 功能 1.播放由点击ListView的item所指定的歌曲
+     *      2.根据获得的songBean对象设置控制栏的歌手与歌名
+     *
+     * @param song
+     */
     //播放指定Bean的音乐
     public void PlayBeanMusic(SongBean song) {
-        //根据点击事件设置底部的歌手与歌曲名
+        //根据点击事件设置底部的歌手与歌曲名,还有专辑图片
         B_singer.setText(song.getSinger());
         B_song_name.setText(song.getSong());
+
+        // Mediametadataretriever类提供了一个统一的接口取回帧和取回从一个输入媒体文件中的元数据。
+        MediaMetadataRetriever mediaMetadataRetriever=new MediaMetadataRetriever();
+
+        mediaMetadataRetriever.setDataSource(song.getPath());
+
+        byte[] picture = mediaMetadataRetriever.getEmbeddedPicture();
+
+        Bitmap bitmap= BitmapFactory.decodeByteArray(picture,0,picture.length);
+
+        B_ablum.setImageBitmap(bitmap);
+
 
         //停止当前播放的音乐
         StopCurrentMusic();
 
-
         //重置多媒体播放器
         mediaPlayer.reset();//删掉原来的地址
         try {
-
             //设置新的播放路径
             mediaPlayer.setDataSource(song.getPath());
-
             CurrentStopReason = Changesong;//表明当前音乐是由于切换而暂停的
             PlayMusic();//播放音乐
         } catch (IOException e) {
@@ -306,19 +346,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
+    /**
+     * 功能 1.停止当前播放的音乐
+     *      2.更改播放按钮图片
+     */
     //停止当前播放的音乐
     private void StopCurrentMusic(){
         if(mediaPlayer != null){
             mediaPlayer.pause();
             mediaPlayer.seekTo(0);
             mediaPlayer.stop();
-
             //停止的按钮变为将要播放按钮
             B_play.setImageResource(R.mipmap.icon_play);
         }
 
     }
 
+    /**
+     * 功能 1.根据暂停的原因对播放音乐进行不同的处理
+     *      2.更改播放图片按钮
+     */
     //播放音乐
     private void  PlayMusic(){
         //当有音乐正在mediaPlayer中，且没有音乐正在播放
@@ -343,7 +392,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        }
     }
 
-
+    /**
+     * 功能 对当前播放的音乐进行暂停
+     */
     //暂停音乐
     private  void PauseCurrentMusic(){
        if (mediaPlayer!=null&&mediaPlayer.isPlaying()){
@@ -353,7 +404,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
+    /**
+     * 当活动销毁时停止播放音乐
+     */
     //活动被销毁就不再播放音乐
     @Override
     protected void onDestroy() {
@@ -363,9 +416,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**********************    END 音乐的播放等操作     ***********************/
 
 
-
-
-
+    /**
+     * 功能 对下边的控制按钮进行监听，响应不同的点击事件
+     * @param v
+     */
     //按钮点击事件
     @Override
     public void onClick(View v) {
@@ -401,14 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     PlayMusic();
                 }
                 break;
-//            删除音乐按钮
-//            case R.id.item_delete:
-//                Log.d("要删除的索引为", "yunxing?");
-//
-//                //获得要删除音乐的索引
-//                int index = (Integer) v.getTag();
-//
-//                Log.d("要删除的索引为", String.valueOf(index));
+
 
 
         }

@@ -5,14 +5,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
     android:id="@+id/backup"
     android:icon="@drawable/ic_backup"
-    android:title="Settings"
+    android:title="打开网页搜索"
     app:showAsAction="always"/>
 
-<item
-    android:id="@+id/settings"
-    android:icon="@drawable/ic_settings"
-    android:title="Settings"
-    app:showAsAction="never"/>
+
 
     <item
         android:id="@+id/delete"
