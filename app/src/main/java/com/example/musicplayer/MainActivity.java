@@ -13,7 +13,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,16 +42,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<SongBean> songBeanList = new ArrayList<>();
 
     ImageView B_next, B_play, B_last,B_ablum;
-    TextView B_singer, B_song_name;
+    TextView B_singer, B_song_name,B_play_back;
     ListView listView;
     SongAdapter adapter;
-    MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
+    SongBean currentsong;
+    PlayPageFragment playpageFragment;
 
     //CurrentStopReason是用来判断当前音乐停止的原因变量
-    int CurrentStopReason=0;
-    int Changesong = 0;//切换音乐导致的
-    int Pausesong = 1;//暂停按钮导致的
-    int Deletesong = 2;//删除音乐导致的
+    int CurrentStopReason=0; //第一次进入没有点击音乐
+    int Changesong = 1;//切换音乐导致的
+    int Pausesong = 2;//暂停按钮导致的
+    int Deletesong = 3;//删除音乐导致的
 
     //用一个变量记录ListView中的点击的位置，用于切换音乐
     int CurrentMusicPosition;
@@ -196,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    Log.d("album", String.valueOf(album_id));
 //                    Toast.makeText(MainActivity.this,String.valueOf(album_id),Toast.LENGTH_LONG).show();
 
+
+
                     //将一行当中的数据封装到对象当中
                     SongBean bean = new SongBean(song, singer, ablum, time,path,album_id);
                     songBeanList.add(bean);
@@ -241,13 +250,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**********************    初始化     ***********************/
     /**
-     * 功能 底部按钮初始化
+     * 功能 按钮初始化
      */
     private void initView() {
-        B_next = (ImageView) findViewById(R.id.bottom_next);
-        B_last = (ImageView) findViewById(R.id.bottom_last);
-        B_play = (ImageView) findViewById(R.id.bottom_play);//play与pause共用一个按钮，到时替换图片
+        B_next = (ImageView) findViewById(R.id.button_next);
+        B_last = (ImageView) findViewById(R.id.button_last);
+        B_play = (ImageView) findViewById(R.id.button_play);//play与pause共用一个按钮，到时替换图片
         B_ablum = (ImageView)findViewById(R.id.song_icon) ;
+
+
         B_next.setOnClickListener(this);
         B_last.setOnClickListener(this);
         B_play.setOnClickListener(this);
@@ -290,9 +301,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //将此时点击的音乐位置赋给 CurrentMusicPosition变量
                 CurrentMusicPosition = position;
 
-                SongBean song = songBeanList.get(position);
-//                Toast.makeText(MainActivity.this,song.getSong(),Toast.LENGTH_SHORT).show();
-                PlayBeanMusic(song);
+                currentsong = songBeanList.get(position);
+
+                PlayBeanMusic(currentsong);
 
 
             }
@@ -307,9 +318,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     /**********************    音乐的播放等操作     ***********************/
-    /**
+       /**
      * 功能 1.播放由点击ListView的item所指定的歌曲
      *      2.根据获得的songBean对象设置控制栏的歌手与歌名
+     *      3.加载专辑图片
      *
      * @param song
      */
@@ -319,16 +331,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         B_singer.setText(song.getSinger());
         B_song_name.setText(song.getSong());
 
-        // Mediametadataretriever类提供了一个统一的接口取回帧和取回从一个输入媒体文件中的元数据。
-        MediaMetadataRetriever mediaMetadataRetriever=new MediaMetadataRetriever();
-
-        mediaMetadataRetriever.setDataSource(song.getPath());
-
-        byte[] picture = mediaMetadataRetriever.getEmbeddedPicture();
-
-        Bitmap bitmap= BitmapFactory.decodeByteArray(picture,0,picture.length);
-
-        B_ablum.setImageBitmap(bitmap);
+        //获取专辑图片并设置图片
+        RoundedBitmapDrawable ralbum = getalbum(currentsong);
+        B_ablum.setImageDrawable(ralbum);
 
 
         //停止当前播放的音乐
@@ -346,6 +351,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 功能 获取专辑图片并转化为圆形
+     * @param song
+     * @return 专辑的图片
+     */
+    public RoundedBitmapDrawable getalbum(SongBean song){
+        //设置专辑图片
+        // Mediametadataretriever类提供了一个统一的接口取回帧和取回从一个输入媒体文件中的元数据。
+        MediaMetadataRetriever mediaMetadataRetriever=new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(song.getPath());
+        byte[] picture = mediaMetadataRetriever.getEmbeddedPicture();
+        Bitmap bitmap= BitmapFactory.decodeByteArray(picture,0,picture.length);
+
+        //创建RoundedBitmapDrawable对象
+        RoundedBitmapDrawable roundalbum = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        roundalbum.setCornerRadius(bitmap.getWidth()/2); //设置圆角半径（根据实际需求）
+        roundalbum.setAntiAlias(true); //设置反走样
+
+        return roundalbum;
+    }
 
 
     /**
@@ -370,26 +395,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     //播放音乐
     private void  PlayMusic(){
-        //当有音乐正在mediaPlayer中，且没有音乐正在播放
-       if( mediaPlayer!=null&&!mediaPlayer.isPlaying()){
+        if(CurrentStopReason == 0){
+            Toast.makeText(MainActivity.this,"请点击列表进行播放",Toast.LENGTH_SHORT).show();
+        }else if( mediaPlayer!=null&&!mediaPlayer.isPlaying()){ //当有音乐正在mediaPlayer中，且没有音乐正在播放
             //判断停止的原因
-           if( CurrentStopReason == Changesong) {
+            if( CurrentStopReason == Changesong) {
 
-               try {
-                   mediaPlayer.prepare();
-                   mediaPlayer.start();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           }else if(CurrentStopReason == Pausesong){
-               //继续播放
-               mediaPlayer.start();
-           }else{
-               Toast.makeText(MainActivity.this,"当前音乐已删除，请切换其他音乐播放",Toast.LENGTH_SHORT).show();
-           }
-           //播放按钮变为暂停按钮
-           B_play.setImageResource(R.mipmap.icon_pause);
-       }
+                try {
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else if(CurrentStopReason == Pausesong){
+                //继续播放
+                mediaPlayer.start();
+            }else if(CurrentStopReason == Deletesong){
+                Toast.makeText(MainActivity.this,"当前音乐已删除，请切换其他音乐播放",Toast.LENGTH_SHORT).show();
+                return;//避免删除的没有播放音乐，又改变按钮
+            }
+            //播放按钮变为暂停按钮
+            B_play.setImageResource(R.mipmap.icon_pause);
+        }
     }
 
     /**
@@ -425,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()){
 //            下一首点击按钮
-            case R.id.bottom_next:
+            case R.id.button_next:
                 if(CurrentMusicPosition == songBeanList.size()-1) {
                     Toast.makeText(MainActivity.this, "已经是最后一首啦！", Toast.LENGTH_SHORT).show();
                 }else{
@@ -435,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 //            上一首点击按钮
-            case R.id.bottom_last:
+            case R.id.button_last:
                 if(CurrentMusicPosition == 0) {
                     Toast.makeText(MainActivity.this, "已经是第一首啦！", Toast.LENGTH_SHORT).show();
                 }else{
@@ -445,8 +472,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 //            播放的点击按钮
-            case R.id.bottom_play:
-                Toast.makeText(MainActivity.this,"播放",Toast.LENGTH_SHORT).show();
+            case R.id.button_play:
+//                Toast.makeText(MainActivity.this,"播放",Toast.LENGTH_SHORT).show();
                 if(mediaPlayer.isPlaying()){
                     //暂停音乐
                     PauseCurrentMusic();
@@ -456,8 +483,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 
+//            点击专辑按钮跳转到详细播放页面
+            case R.id.song_icon:
+
+                playpageFragment = new PlayPageFragment();
+                goPlayFragment(playpageFragment);
+                break;
 
 
         }
     }
+
+
+
+    /**
+     * 功能 跳转播放页面的碎片
+     * @param fragment
+     */
+    private void goPlayFragment(Fragment fragment) {
+        FragmentManager fragmentmanager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentmanager.beginTransaction();
+        transaction.replace(R.id.main_layout,fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+
+
 }

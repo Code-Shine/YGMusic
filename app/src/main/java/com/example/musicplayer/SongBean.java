@@ -1,16 +1,23 @@
 package com.example.musicplayer;
 
+import java.io.Serializable;
+
 /**
  * Created by 国 on 2020/6/15.
  */
 
-public class SongBean {
+public class SongBean implements Serializable{
     private String song; //歌曲名称
     private String singer; //歌手名称
     private String album; //专辑名称
     private String duration; //歌曲时长
     private String path; //歌曲路径
-    private int album_id;//
+
+
+
+    private int album_id;//专辑的ID
+
+
 
 
     public SongBean() {
@@ -26,9 +33,16 @@ public class SongBean {
         this.album_id =album_id;
 
 
+
     }
 
+    public int getAlbum_id() {
+        return album_id;
+    }
 
+    public void setAlbum_id(int album_id) {
+        this.album_id = album_id;
+    }
 
     public String getSong() {
         return song;
@@ -72,11 +86,5 @@ public class SongBean {
 
 
 
-    public int getAlbum_id() {
-        return album_id;
-    }
 
-    public void setAlbum_id(int album_id) {
-        this.album_id = album_id;
-    }
 }

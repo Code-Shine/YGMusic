@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg2">
+    android:background="@drawable/main_background">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#33eeeeee"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         />
+
+    <!--分割线-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#9933FA"
+        android:layout_below="@+id/toolbar"/>
 
     <!--底部导航栏-->
     <RelativeLayout
@@ -27,15 +35,14 @@
             android:layout_height="0.5dp"
             android:background="#9933FA"/>
 
-        <!--图标-->
+        <!--专辑图标-->
         <ImageView
             android:id="@+id/song_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/icon_song"
             android:layout_centerVertical="true"
-            android:background="@mipmap/a1"
-            android:layout_marginLeft="10dp" />
+            android:src="@mipmap/album2"
+            android:layout_marginLeft="15dp" />
 
         <!--歌曲名称-->
         <TextView
@@ -62,34 +69,36 @@
 
         <!--下一首按钮-->
         <ImageView
-            android:id="@+id/bottom_next"
+            android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_next"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"/>
+           />
 
         <!--播放与暂停按钮-->
         <ImageView
-            android:id="@+id/bottom_play"
+            android:id="@+id/button_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:src="@mipmap/icon_play"
-            android:layout_toLeftOf="@id/bottom_next"
-            android:layout_marginRight="20dp"/>
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/button_next"
+            />
 
 
         <!--上一首按钮-->
         <ImageView
-            android:id="@+id/bottom_last"
+            android:id="@+id/button_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/button_play"
             android:src="@mipmap/icon_last"
-            android:layout_toLeftOf="@id/bottom_play"
-            android:layout_marginRight="20dp"/>
+
+            />
+
 
 
 
@@ -103,6 +112,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/bottom_layout"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"
+        />
 
 </RelativeLayout>

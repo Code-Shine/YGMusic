@@ -5,8 +5,10 @@
     android:layout_height="match_parent"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="20dp"
     android:descendantFocusability= "blocksDescendants"
+
+    android:background="#33454545"
    >
 
 
@@ -17,6 +19,7 @@
         android:layout_height="wrap_content"
         android:text="我喜欢你"
         android:textSize="18sp"
+        android:textColor="#D1D1D1"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"/>
@@ -32,14 +35,14 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="10dp"
         android:textSize="14sp"
-        android:textColor="#888"/>
+        android:textColor="#D1D1D1"/>
 
     <!--歌手与专辑的横线-->
     <TextView
         android:id="@+id/item_line"
         android:layout_width="2dp"
         android:layout_height="18dp"
-        android:background="#888"
+        android:background="#D1D1D1"
         android:layout_toRightOf="@id/item_singer"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -55,23 +58,11 @@
         android:layout_toRightOf="@id/item_line"
         android:layout_alignBottom="@id/item_singer"
         android:textSize="14sp"
-        android:textColor="#888"
+        android:textColor="#D1D1D1"
         android:ellipsize="end"
        />
 
 
-    <!--删除歌曲的按钮-->
-    <!--<ImageButton-->
-        <!--android:id="@+id/item_delete"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_below="@id/item_song_name"-->
-        <!--android:layout_marginRight="20dp"-->
-
-        <!--android:src="@drawable/ic_delete"-->
-        <!--android:padding="0dp"-->
-        <!--android:focusable = "false" />-->
 
     <!--播放时长-->
     <TextView
@@ -85,7 +76,7 @@
         android:layout_marginRight="20dp"
         android:text="03:40"
         android:textSize="14sp"
-        android:textColor="#888"/>
+        android:textColor="#D1D1D1"/>
 
 
 
