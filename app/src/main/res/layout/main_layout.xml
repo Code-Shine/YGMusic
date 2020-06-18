@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/main_background">
-
-    <FrameLayout
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/main_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/out_main_layout"
@@ -13,7 +9,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/main_layout">
+            android:id="@+id/main_layout"
+            >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -104,13 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/button_play"
-                    android:src="@mipmap/icon_last"
-
-                    />
-
-
-
-
+                    android:src="@mipmap/icon_last"/>
 
             </RelativeLayout>
 
@@ -124,5 +115,4 @@
                 android:layout_below="@+id/toolbar"
                 />
         </RelativeLayout>
-    </FrameLayout>
-</RelativeLayout>
+</FrameLayout>

@@ -16,7 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Created by 国 on 2020/6/17.
+ * Created by XYG
+ * 类PlayPageFragment：YGMusic的音乐详情播放界面
  */
 
 public class PlayPageFragment extends Fragment implements View.OnClickListener{
@@ -29,6 +30,7 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
     MediaPlayer media;
     RelativeLayout mainLayout;
 
+    //创建一个线程对播放器的进度进行读取，实现进度条功能
     Handler handler = new Handler();
     Runnable runable = new Runnable() {
         @Override
@@ -38,7 +40,10 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         }
     };
 
-
+    /**
+     * 碎片的生命周期函数
+     * @param activity
+     */
     @Override
     public void onAttach(Context activity){
         super.onAttach(activity);
@@ -51,6 +56,13 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    /**
+     * 为碎片创建视图的碎片生命周期函数
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -58,6 +70,10 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
+    /**
+     * 碎片视图加载完成后的生命周期函数
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -77,10 +93,8 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         P_next = (ImageView)getView().findViewById(R.id.button_next);
         P_next.setOnClickListener(this);
 
-//        progressbar.setMax(Integer.parseInt(currentbean.getDuration()));
         //设置播放界面的各种信息
         setMessage(currentbean);
-
 
         handler.post(runable);
 
@@ -100,6 +114,10 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
 
     }
 
+    /**
+     * 设置播放详情界面的播放信息
+     * @param currentbean
+     */
     public void setMessage(SongBean currentbean){
         P_song.setText(currentbean.getSong());
         P_singer.setText(currentbean.getSinger());
@@ -114,16 +132,16 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    /**
+     * 相应播放详情页面的点击事件
+     * @param v
+     */
     @Override
-    public void onClick(View v) { 
-
+    public void onClick(View v) {
         ((MainActivity)getActivity()).onClick(v);
-
         newcurrentbean = ((MainActivity)getActivity()).currentsong;
         setMessage(newcurrentbean);
     }
-
-
 
 }
 

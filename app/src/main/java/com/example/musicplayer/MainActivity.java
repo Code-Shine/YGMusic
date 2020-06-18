@@ -36,7 +36,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Create By XYG
+ * 类MainActivity：YGMusic的主要音乐列表界面
+ */
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private List<SongBean> songBeanList = new ArrayList<>();
@@ -45,7 +48,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     TextView B_singer, B_song_name;
     ListView listView;
     SongAdapter adapter;
-    public  MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer;
     SongBean currentsong;
     PlayPageFragment playpageFragment;
 
@@ -70,23 +73,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.main_layout);
 
         mediaPlayer = new MediaPlayer();
-
+        mainlayout = (RelativeLayout) findViewById(R.id.main_layout);
         //初始化底部按钮与视图的控件
         initView();
 
         //初始化歌曲的测试数据，将数据放入适配器中
         initSongs();
 
-
-
         //加载位于本地SD卡的数据文件
         loadMusic();
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
     }
+
 
     /**********************    ToolBar     ***********************/
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,9 +113,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onClick(DialogInterface dialog,int which){
                         //设置点击OK的事件，删除音乐
                     deleteCurrentMusic();
-
                     }});
-
                 dialog.setNegativeButton("取消",new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog,int which){
@@ -136,16 +134,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         CurrentStopReason = Deletesong;
         //在适配器中移除当前播放的对象，listview会自动更新
         adapter.remove(songBeanList.get(CurrentMusicPosition));
-
-//        Toast.makeText(MainActivity.this, String.valueOf(CurrentMusicPosition), Toast.LENGTH_SHORT).show();
-
-//        songBeanList.remove(CurrentMusicPosition);
-
-
     }
-
-
     /**********************   END ToolBar     ***********************/
+
 
 
     /**********************    动态申请权限并读取数据     ***********************/
@@ -204,8 +195,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     int album_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 //                    Log.d("album", String.valueOf(album_id));
 //                    Toast.makeText(MainActivity.this,String.valueOf(album_id),Toast.LENGTH_LONG).show();
-
-
 
                     //将一行当中的数据封装到对象当中
                     SongBean bean = new SongBean(song, singer, ablum, time,path,album_id);
@@ -304,15 +293,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 CurrentMusicPosition = position;
 
                 currentsong = songBeanList.get(position);
-
+                //播放此时点击的事件
                 PlayBeanMusic(currentsong);
-
 
             }
         });
 
     }
-
     /**********************    END 初始化     ***********************/
 
 
@@ -336,8 +323,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         //获取专辑图片并设置图片
         RoundedBitmapDrawable ralbum = getalbum(currentsong);
         B_ablum.setImageDrawable(ralbum);
-
-
 
         //停止当前播放的音乐
         StopCurrentMusic();
@@ -367,7 +352,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         byte[] picture = mediaMetadataRetriever.getEmbeddedPicture();
         Bitmap bitmap= BitmapFactory.decodeByteArray(picture,0,picture.length);
 
-        //创建RoundedBitmapDrawable对象
+        //创建RoundedBitmapDrawable对象，将bitmap转化为RoundedBitmapDrawable
         RoundedBitmapDrawable roundalbum = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
         roundalbum.setCornerRadius(bitmap.getWidth()/2); //设置圆角半径（根据实际需求）
         roundalbum.setAntiAlias(true); //设置反走样
@@ -504,8 +489,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     Toast.makeText(MainActivity.this,"当前没有音乐播放",Toast.LENGTH_SHORT).show();
                 }else {
                     //隐藏活动的布局，让碎片不响应按键事件
-                    mainlayout = (RelativeLayout) findViewById(R.id.main_layout);
                     mainlayout.setVisibility(View.INVISIBLE);
+//                    Log.d("Main" ,String.valueOf(View.INVISIBLE));
+//                    Log.d("Main" ,String.valueOf(View.VISIBLE));
+//                    Log.d("Main" ,String.valueOf(mainlayout.getVisibility()));
                     //打开碎片的布局
                     playpageFragment = new PlayPageFragment();
                     goPlayFragment(playpageFragment);
@@ -523,7 +510,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * @param fragment
      */
     private void goPlayFragment(Fragment fragment) {
-
         FragmentManager fragmentmanager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentmanager.beginTransaction();
         transaction.replace(R.id.out_main_layout,fragment);
@@ -532,9 +518,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    /**
+     * 让碎片中的自定义返回按钮与系统返回按键一样可以返回
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mainlayout.setVisibility(View.VISIBLE);
+        //让之前消失的活动布局变得可见
+        if(mainlayout.getVisibility() == View.INVISIBLE) {
+            mainlayout.setVisibility(View.VISIBLE);
+        }
+
+
     }
 }

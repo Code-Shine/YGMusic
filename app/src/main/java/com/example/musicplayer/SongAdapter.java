@@ -10,7 +10,8 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by 国 on 2020/6/15.
+ * Created by XYG
+ * 类SongAdapter：YGMusic的音乐列表的详情界面
  */
 
 public class SongAdapter extends ArrayAdapter<SongBean>{
@@ -36,19 +37,6 @@ public class SongAdapter extends ArrayAdapter<SongBean>{
         TextView singer = (TextView) view.findViewById(R.id.item_singer);
         TextView album = (TextView) view.findViewById(R.id.item_album);
         TextView duration = (TextView) view.findViewById(R.id.item_duration);
-
-//        //为Button添加一个setTag方法，将此时的索引值传进去，以便在删除的时候调用
-//        final ImageButton deletebutton = (ImageButton) view.findViewById(R.id.item_delete);
-//        deletebutton.setTag(position);
-//
-//        deletebutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int index = (Integer) deletebutton.getTag();
-//                Log.d("这是测试",String.valueOf(index) );
-//            }
-//        });
-
 
         //子项布局中的实例获取SongBean中的具体值
         songname.setText(song.getSong());

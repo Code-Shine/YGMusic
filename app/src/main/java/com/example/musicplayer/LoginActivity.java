@@ -10,6 +10,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Create By XYG
+ * 类LoginActivity：YGMusic的登陆界面
+ */
 public class LoginActivity extends BaseActivity {
 
     private EditText Text1,Text2;
@@ -59,12 +63,6 @@ public class LoginActivity extends BaseActivity {
                     editor.apply();
 
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-
-//                    //存储用户名与密码
-//                    Bundle bundle = new Bundle();
-//                    bundle.putCharSequence("u_name",username);
-//                    bundle.putCharSequence("p_word",password);
-//                    intent.putExtras(bundle);
 
                     startActivity(intent);
                     //登陆后就撤销当前活动

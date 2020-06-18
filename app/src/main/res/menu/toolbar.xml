@@ -2,13 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<item
+    <!--暂未实现搜索功能-->
+    <item
     android:id="@+id/backup"
     android:icon="@drawable/ic_backup"
     android:title="打开网页搜索"
     app:showAsAction="always"/>
-
-
 
     <item
         android:id="@+id/delete"
