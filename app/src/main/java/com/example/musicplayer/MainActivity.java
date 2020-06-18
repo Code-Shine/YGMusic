@@ -101,12 +101,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.backup:
                 Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.delete:
 
-                Toast.makeText(this, "删除", Toast.LENGTH_SHORT).show();
+            case R.id.delete:
+//                Toast.makeText(this, "删除", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
                 dialog.setTitle("确定删除当前正在播放的音乐吗？");
-                dialog.setMessage("请确认是否对当前音乐进行删除");
+                dialog.setMessage("请确认是否删除");
                 dialog.setCancelable(false);
                 dialog.setPositiveButton("确认",new DialogInterface.OnClickListener(){
                     @Override
@@ -188,8 +188,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     //获取歌曲时长，因为是long，所以需要转换
                     long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-                    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-                    String time = sdf.format(new Date(duration));
+                    SimpleDateFormat simpdf = new SimpleDateFormat("mm:ss");
+                    String time = simpdf.format(new Date(duration));
 
                     //获取album_id,专辑图片的ID
                     int album_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));

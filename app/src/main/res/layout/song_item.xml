@@ -46,7 +46,6 @@
         android:layout_toRightOf="@id/item_singer"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-
         android:layout_alignTop="@id/item_singer"/>
 
     <!--专辑名-->
@@ -70,7 +69,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_song_name"
-
         android:layout_alignParentRight="true"
         android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"

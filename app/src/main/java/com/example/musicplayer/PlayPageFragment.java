@@ -15,6 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by XYG
  * 类PlayPageFragment：YGMusic的音乐详情播放界面
@@ -23,7 +26,7 @@ import android.widget.TextView;
 public class PlayPageFragment extends Fragment implements View.OnClickListener{
 
     ImageView back,P_album,P_last,P_play,P_next;
-    TextView P_singer,P_song;
+    TextView P_singer,P_song,Current_time,Total_time;
     SongBean currentbean,newcurrentbean;
     RoundedBitmapDrawable playalbum;
     ProgressBar progressbar;
@@ -36,6 +39,10 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         @Override
         public void run() {
             progressbar.setProgress(media.getCurrentPosition());
+
+//          SimpleDateFormat simpdf = new SimpleDateFormat("mm:ss");
+            String currenttime = new SimpleDateFormat("mm:ss").format(new Date(media.getCurrentPosition()));
+            Current_time.setText(currenttime);
             handler.postDelayed(runable,100);
         }
     };
@@ -84,6 +91,9 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         P_album = (ImageView)getView().findViewById(R.id.play_album);
         progressbar = (ProgressBar)getView().findViewById(R.id.progress_bar);
 
+        Current_time = (TextView)getView().findViewById(R.id.current_time);
+        Total_time = (TextView)getView().findViewById(R.id.total_time);
+
         P_last = (ImageView)getView().findViewById(R.id.button_last);
         P_last.setOnClickListener(this);
 
@@ -124,6 +134,7 @@ public class PlayPageFragment extends Fragment implements View.OnClickListener{
         playalbum =  ((MainActivity)getActivity()).getalbum(currentbean);
         P_album.setImageDrawable(playalbum);
         progressbar.setMax(media.getDuration());
+        Total_time.setText(currentbean.getDuration());
 
         if (media.isPlaying()) {
             P_play.setImageResource(R.drawable.activity_play_stop);

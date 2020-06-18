@@ -11,7 +11,7 @@
         android:src="@drawable/back"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         />
 
@@ -60,25 +60,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/circle"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/play_line"
         android:layout_centerHorizontal="true" />
 
-    <!--进度条-->
-    <ProgressBar
-        android:id="@+id/progress_bar"
-
-        style="?android:attr/progressBarStyleHorizontal"
+    <!--进度条界面-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@+id/play_album"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:max="100"
-        android:progress="20"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:id="@+id/progress_bar_line">
 
-        />
+        <!--音乐的当前播放位置的时间-->
+        <TextView
+            android:id="@+id/current_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="3:00"
+            android:gravity="center"
+            android:textColor="#FFFFF0"/>
+
+        <!--进度条-->
+         <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="260dp"
+            android:layout_height="5dp"
+            android:max="100"
+            android:progress="20"
+             android:layout_weight="0.19" />
+
+        <!--音乐的当前播放位置的时间-->
+        <TextView
+            android:id="@+id/total_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:text="3:44"
+            android:gravity="center"
+            android:textColor="#FFFFF0"/>
+    </LinearLayout>
 
 
     <!--控制按钮-->
@@ -88,7 +114,7 @@
         android:gravity="bottom"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="30dp"
-        android:layout_below="@+id/progress_bar">
+        android:layout_below="@+id/progress_bar_line">
 
 
         <LinearLayout
@@ -97,7 +123,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-
             >
 
             <ImageView
