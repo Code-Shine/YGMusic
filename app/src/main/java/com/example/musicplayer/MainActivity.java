@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private List<SongBean> songBeanList = new ArrayList<>();
 
     ImageView B_next, B_play, B_last,B_ablum;
-    TextView B_singer, B_song_name,B_play_back;
+    TextView B_singer, B_song_name;
     ListView listView;
     SongAdapter adapter;
     public  MediaPlayer mediaPlayer;
@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     int Deletesong = 3;//删除音乐导致的
 
     //用一个变量记录ListView中的点击的位置，用于切换音乐
-    int CurrentMusicPosition;
+    int CurrentMusicPosition=0;
 
     /**
      * onCreate方法
@@ -338,6 +338,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         B_ablum.setImageDrawable(ralbum);
 
 
+
         //停止当前播放的音乐
         StopCurrentMusic();
 
@@ -428,6 +429,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private  void PauseCurrentMusic(){
        if (mediaPlayer!=null&&mediaPlayer.isPlaying()){
            mediaPlayer.pause();
+           //更换图标
            B_play.setImageResource(R.mipmap.icon_play);
            CurrentStopReason = Pausesong;//表明此时是因为音乐暂停引起的
         }
@@ -530,5 +532,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mainlayout.setVisibility(View.VISIBLE);
+    }
 }

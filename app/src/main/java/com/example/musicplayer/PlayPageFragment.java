@@ -19,11 +19,11 @@ import android.widget.TextView;
  * Created by 国 on 2020/6/17.
  */
 
-public class PlayPageFragment extends Fragment {
+public class PlayPageFragment extends Fragment implements View.OnClickListener{
 
-    ImageView back,P_album,P_play,P_last,P_next;
+    ImageView back,P_album,P_last,P_play,P_next;
     TextView P_singer,P_song;
-    SongBean currentbean;
+    SongBean currentbean,newcurrentbean;
     RoundedBitmapDrawable playalbum;
     ProgressBar progressbar;
     MediaPlayer media;
@@ -43,7 +43,7 @@ public class PlayPageFragment extends Fragment {
     public void onAttach(Context activity){
         super.onAttach(activity);
         currentbean =((MainActivity)activity).currentsong;
-        playalbum =  ((MainActivity)activity).getalbum(currentbean);
+    //    playalbum =  ((MainActivity)activity).getalbum(currentbean);
         media =  ((MainActivity)activity).mediaPlayer;
         mainLayout = ((MainActivity)activity).mainlayout;
 
@@ -66,14 +66,21 @@ public class PlayPageFragment extends Fragment {
         P_singer = (TextView)getView().findViewById(R.id.Top_singer);
         P_song = (TextView) getView().findViewById(R.id.Top_song_name);
         P_album = (ImageView)getView().findViewById(R.id.play_album);
-
         progressbar = (ProgressBar)getView().findViewById(R.id.progress_bar);
 
+        P_last = (ImageView)getView().findViewById(R.id.button_last);
+        P_last.setOnClickListener(this);
+
+        P_play = (ImageView)getView().findViewById(R.id.button_play);
+        P_play.setOnClickListener(this);
+
+        P_next = (ImageView)getView().findViewById(R.id.button_next);
+        P_next.setOnClickListener(this);
+
 //        progressbar.setMax(Integer.parseInt(currentbean.getDuration()));
-        progressbar.setMax(media.getDuration());
-        P_song.setText(currentbean.getSong());
-        P_singer.setText(currentbean.getSinger());
-        P_album.setImageDrawable(playalbum);
+        //设置播放界面的各种信息
+        setMessage(currentbean);
+
 
         handler.post(runable);
 
@@ -84,24 +91,39 @@ public class PlayPageFragment extends Fragment {
                 //取消线程
                 handler.removeCallbacks(runable);
                 //显示main页面的布局
-                mainLayout.setVisibility(View.VISIBLE);
+//                mainLayout.setVisibility(View.VISIBLE);
                 getActivity().onBackPressed();
 
             }
         });
-        
-
-
-
-
-
-
-
 
 
     }
 
+    public void setMessage(SongBean currentbean){
+        P_song.setText(currentbean.getSong());
+        P_singer.setText(currentbean.getSinger());
+        playalbum =  ((MainActivity)getActivity()).getalbum(currentbean);
+        P_album.setImageDrawable(playalbum);
+        progressbar.setMax(media.getDuration());
+
+        if (media.isPlaying()) {
+            P_play.setImageResource(R.drawable.activity_play_stop);
+        } else {
+            P_play.setImageResource(R.drawable.activity_play_start);
+        }
+    }
+
+    @Override
+    public void onClick(View v) { 
+
+        ((MainActivity)getActivity()).onClick(v);
+
+        newcurrentbean = ((MainActivity)getActivity()).currentsong;
+        setMessage(newcurrentbean);
+    }
 
 
 
 }
+

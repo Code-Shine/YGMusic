@@ -104,7 +104,7 @@
                 android:id="@+id/button_last"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/activity_play_last" />
+                android:src="@drawable/activity_play_last" />
 
             <ImageView
                 android:id="@+id/button_play"
@@ -112,13 +112,13 @@
                 android:layout_height="90dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/activity_play_start" />
+                android:src="@drawable/activity_play_stop" />
 
             <ImageView
                 android:id="@+id/button_next"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/activity_play_next" />
+                android:src="@drawable/activity_play_next" />
         </LinearLayout>
     </RelativeLayout>
 
