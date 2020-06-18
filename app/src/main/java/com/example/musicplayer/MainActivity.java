@@ -20,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +27,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private List<SongBean> songBeanList = new ArrayList<>();
 
@@ -45,9 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView B_singer, B_song_name,B_play_back;
     ListView listView;
     SongAdapter adapter;
-    public static MediaPlayer mediaPlayer;
+    public  MediaPlayer mediaPlayer;
     SongBean currentsong;
     PlayPageFragment playpageFragment;
+
+    RelativeLayout mainlayout;
 
     //CurrentStopReason是用来判断当前音乐停止的原因变量
     int CurrentStopReason=0; //第一次进入没有点击音乐
@@ -438,7 +440,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityCollector.finishAll();
         StopCurrentMusic();
+
     }
     /**********************    END 音乐的播放等操作     ***********************/
 
@@ -453,22 +457,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()){
 //            下一首点击按钮
             case R.id.button_next:
-                if(CurrentMusicPosition == songBeanList.size()-1) {
-                    Toast.makeText(MainActivity.this, "已经是最后一首啦！", Toast.LENGTH_SHORT).show();
-                }else{
-                    CurrentMusicPosition++;
-                    SongBean nextBean = songBeanList.get(CurrentMusicPosition);
-                    PlayBeanMusic(nextBean);
+                if(currentsong == null){
+                    currentsong = songBeanList.get(CurrentMusicPosition);
+                    PlayBeanMusic(currentsong);
+                }else {
+                    if (CurrentMusicPosition == songBeanList.size() - 1) {
+                        Toast.makeText(MainActivity.this, "已经是最后一首啦！", Toast.LENGTH_SHORT).show();
+                    } else {
+                        CurrentMusicPosition++;
+                        currentsong = songBeanList.get(CurrentMusicPosition);
+                        PlayBeanMusic(currentsong);
+                    }
                 }
                 break;
 //            上一首点击按钮
             case R.id.button_last:
-                if(CurrentMusicPosition == 0) {
-                    Toast.makeText(MainActivity.this, "已经是第一首啦！", Toast.LENGTH_SHORT).show();
-                }else{
-                    CurrentMusicPosition--;
-                    SongBean lastBean = songBeanList.get(CurrentMusicPosition);
-                    PlayBeanMusic(lastBean);
+                if(currentsong == null){
+                    Toast.makeText(MainActivity.this, "当前没有音乐在播放", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (CurrentMusicPosition == 0) {
+                        Toast.makeText(MainActivity.this, "已经是第一首啦！", Toast.LENGTH_SHORT).show();
+                    } else {
+                        CurrentMusicPosition--;
+                        currentsong = songBeanList.get(CurrentMusicPosition);
+                        PlayBeanMusic(currentsong);
+                    }
                 }
                 break;
 //            播放的点击按钮
@@ -485,9 +498,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //            点击专辑按钮跳转到详细播放页面
             case R.id.song_icon:
-
-                playpageFragment = new PlayPageFragment();
-                goPlayFragment(playpageFragment);
+                if (currentsong == null){
+                    Toast.makeText(MainActivity.this,"当前没有音乐播放",Toast.LENGTH_SHORT).show();
+                }else {
+                    //隐藏活动的布局，让碎片不响应按键事件
+                    mainlayout = (RelativeLayout) findViewById(R.id.main_layout);
+                    mainlayout.setVisibility(View.INVISIBLE);
+                    //打开碎片的布局
+                    playpageFragment = new PlayPageFragment();
+                    goPlayFragment(playpageFragment);
+                }
                 break;
 
 
@@ -501,9 +521,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param fragment
      */
     private void goPlayFragment(Fragment fragment) {
+
         FragmentManager fragmentmanager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentmanager.beginTransaction();
-        transaction.replace(R.id.main_layout,fragment);
+        transaction.replace(R.id.out_main_layout,fragment);
         transaction.addToBackStack(null);
         transaction.commit();
 

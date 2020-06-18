@@ -1,118 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#33eeeeee"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        />
-
-    <!--分割线-->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#9933FA"
-        android:layout_below="@+id/toolbar"/>
-
-    <!--底部导航栏-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/bottom_layout"
-        android:background="#33EEEEEE">
-        <!--分割线-->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#9933FA"/>
-
-        <!--专辑图标-->
-        <ImageView
-            android:id="@+id/song_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/album2"
-            android:layout_marginLeft="15dp" />
-
-        <!--歌曲名称-->
-        <TextView
-            android:id="@+id/bottom_song_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我喜欢你"
-            android:layout_toRightOf="@id/song_icon"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <!--歌手名称-->
-        <TextView
-            android:id="@+id/bottom_singer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="陈小希"
-            android:textSize="12sp"
-            android:layout_below="@id/bottom_song_name"
-            android:layout_alignLeft="@id/bottom_song_name"
-            android:layout_marginTop="10dp"/>
-
-        <!--下一首按钮-->
-        <ImageView
-            android:id="@+id/button_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_next"
-            android:layout_alignParentRight="true"
-           />
-
-        <!--播放与暂停按钮-->
-        <ImageView
-            android:id="@+id/button_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/icon_play"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/button_next"
-            />
-
-
-        <!--上一首按钮-->
-        <ImageView
-            android:id="@+id/button_last"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/button_play"
-            android:src="@mipmap/icon_last"
-
-            />
-
-
-
-
-
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/list_view"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/bottom_layout"
-        android:layout_below="@+id/toolbar"
-        />
+        android:id="@+id/out_main_layout"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_layout">
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#33eeeeee"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                />
+
+            <!--分割线-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#9933FA"
+                android:layout_below="@+id/toolbar"/>
+
+            <!--底部导航栏-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/bottom_layout"
+                android:background="#33EEEEEE">
+                <!--分割线-->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#9933FA"/>
+
+                <!--专辑图标-->
+                <ImageView
+                    android:id="@+id/song_icon"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/album2"
+                    android:layout_marginLeft="15dp" />
+
+                <!--歌曲名称-->
+                <TextView
+                    android:id="@+id/bottom_song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我喜欢你"
+                    android:layout_toRightOf="@id/song_icon"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <!--歌手名称-->
+                <TextView
+                    android:id="@+id/bottom_singer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="陈小希"
+                    android:textSize="12sp"
+                    android:layout_below="@id/bottom_song_name"
+                    android:layout_alignLeft="@id/bottom_song_name"
+                    android:layout_marginTop="10dp"/>
+
+                <!--下一首按钮-->
+                <ImageView
+                    android:id="@+id/button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_next"
+                    android:layout_alignParentRight="true"
+                   />
+
+                <!--播放与暂停按钮-->
+                <ImageView
+                    android:id="@+id/button_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_play"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/button_next"
+                    />
+
+
+                <!--上一首按钮-->
+                <ImageView
+                    android:id="@+id/button_last"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/button_play"
+                    android:src="@mipmap/icon_last"
+
+                    />
+
+
+
+
+
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_above="@+id/bottom_layout"
+                android:layout_below="@+id/toolbar"
+                />
+        </RelativeLayout>
+    </FrameLayout>
 </RelativeLayout>
