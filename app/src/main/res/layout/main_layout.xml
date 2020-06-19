@@ -131,6 +131,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        android:background="@drawable/login_bg4"
+        android:background="@drawable/nav_bg"
         app:menu="@menu/nav_menu" />
 </android.support.v4.widget.DrawerLayout>
