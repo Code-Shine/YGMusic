@@ -5,7 +5,7 @@
     android:id="@+id/land_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg4">
+    android:background="@drawable/login_bg2">
 
     <!--登陆用户名框-->
     <EditText

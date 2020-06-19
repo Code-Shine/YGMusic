@@ -19,6 +19,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -63,6 +66,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     //用一个变量记录ListView中的点击的位置，用于切换音乐
     int CurrentMusicPosition=0;
 
+    private DrawerLayout mDrawerLayout;
+
+
     /**
      * onCreate方法
      * @param savedInstanceState
@@ -85,6 +91,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //设置导航按钮
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);//显示导航按钮
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
     }
 
 
@@ -98,6 +112,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
             case R.id.backup:
                 Toast.makeText(this, "搜索", Toast.LENGTH_SHORT).show();
                 break;

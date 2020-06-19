@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_call"
+            android:icon="@drawable/nav_call"
+            android:title="电话：13600000000" />
+        <item
+            android:id="@+id/nav_friends"
+            android:icon="@drawable/nav_friends"
+            android:title="班级：计算机科学与技术1班" />
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/nav_location"
+            android:title="学校：广东财经大学" />
+        <item
+            android:id="@+id/nav_mail"
+            android:icon="@drawable/nav_mail"
+            android:title="课设：YGMusic简易播放器" />
+        <item
+            android:id="@+id/nav_task"
+            android:icon="@drawable/nav_task"
+            android:title="GitHub：github.com/Code-Shine/YGMusic" />
+    </group>
+</menu>
